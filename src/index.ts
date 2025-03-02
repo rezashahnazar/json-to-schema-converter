@@ -21,205 +21,10 @@ export interface JsonSchemaOptions {
 }
 
 /**
- * Generates a JSON Schema from a JSON object
- * @param json The JSON object to analyze
- * @param options Optional configuration options
- * @returns A JSON Schema object representing the structure of the input
+ * A JSON Schema object
  */
-function generateJsonSchema(
-  json: any,
-  options: { detectFormat?: boolean } = {}
-): any {
-  // Handle null values
-  if (json === null) {
-    return { type: "null" };
-  }
-
-  // Handle arrays
-  if (Array.isArray(json)) {
-    if (json.length === 0) {
-      return {
-        type: "array",
-        items: {},
-      };
-    }
-
-    // Generate schema for each item in the array
-    const itemSchemas = json.map((item) => generateJsonSchema(item, options));
-
-    // Group schemas by type for analysis
-    const schemasByType: Record<string, any[]> = {};
-    itemSchemas.forEach((schema) => {
-      const type = Array.isArray(schema.type) ? "mixed" : schema.type;
-      if (!schemasByType[type]) {
-        schemasByType[type] = [];
-      }
-      schemasByType[type].push(schema);
-    });
-
-    const types = Object.keys(schemasByType);
-
-    if (types.length === 1 && types[0] !== "mixed") {
-      // All items have the same type
-      const type = types[0];
-      if (type === "object") {
-        // For arrays of objects, merge the schemas
-        const mergedSchema = mergeObjectSchemas(schemasByType[type]);
-        return {
-          type: "array",
-          items: mergedSchema,
-        };
-      } else {
-        // For arrays of primitives
-        return {
-          type: "array",
-          items: { type },
-        };
-      }
-    } else {
-      // For mixed type arrays, use oneOf with unique schemas
-      const uniqueSchemas = [
-        ...new Map(
-          itemSchemas.map((schema) => [JSON.stringify(schema), schema])
-        ).values(),
-      ];
-
-      return {
-        type: "array",
-        items: {
-          oneOf: uniqueSchemas,
-        },
-      };
-    }
-  }
-
-  // Handle objects
-  if (typeof json === "object") {
-    const properties: Record<string, any> = {};
-    const required: string[] = [];
-
-    for (const key in json) {
-      if (json.hasOwnProperty(key)) {
-        properties[key] = generateJsonSchema(json[key], options);
-        required.push(key);
-      }
-    }
-
-    return {
-      type: "object",
-      properties,
-      required: required.length > 0 ? required : undefined,
-    };
-  }
-
-  // Handle strings - check for common formats
-  if (typeof json === "string" && options.detectFormat !== false) {
-    // Check for date format (ISO 8601)
-    if (
-      /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/.test(
-        json
-      )
-    ) {
-      return { type: "string", format: "date-time" };
-    }
-
-    // Check for email format
-    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(json)) {
-      return { type: "string", format: "email" };
-    }
-
-    // Check for URI format
-    if (/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(json)) {
-      return { type: "string", format: "uri" };
-    }
-
-    // Check for UUID format
-    if (
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-        json
-      )
-    ) {
-      return { type: "string", format: "uuid" };
-    }
-
-    return { type: "string" };
-  }
-
-  // Handle numbers - distinguish between integers and floating point
-  if (typeof json === "number") {
-    return Number.isInteger(json) ? { type: "integer" } : { type: "number" };
-  }
-
-  // Handle other primitives (boolean, etc.)
-  return { type: typeof json };
-}
-
-/**
- * Merge multiple object schemas into one
- * @param schemas Array of object schemas to merge
- * @returns A merged schema
- */
-function mergeObjectSchemas(schemas: any[]): any {
-  const allProperties = new Set<string>();
-
-  // Collect all property names
-  schemas.forEach((schema) => {
-    if (schema.properties) {
-      Object.keys(schema.properties).forEach((prop) => allProperties.add(prop));
-    }
-  });
-
-  const mergedProperties: Record<string, any> = {};
-  const requiredProperties = new Set<string>();
-
-  // Find properties that appear in all schemas
-  const schemasCount = schemas.length;
-  allProperties.forEach((prop) => {
-    let propCount = 0;
-    const propSchemas: any[] = [];
-
-    schemas.forEach((schema) => {
-      if (schema.properties && schema.properties[prop]) {
-        propCount++;
-        propSchemas.push(schema.properties[prop]);
-
-        // Check if this property is required in this schema
-        if (schema.required && schema.required.includes(prop)) {
-          requiredProperties.add(prop);
-        }
-      }
-    });
-
-    if (propCount > 0) {
-      if (propSchemas.every((s) => s.type === propSchemas[0].type)) {
-        // Same type across all schemas where this property appears
-        mergedProperties[prop] = propSchemas[0];
-      } else {
-        // Different types - use oneOf with unique schemas
-        const uniquePropSchemas = [
-          ...new Map(
-            propSchemas.map((schema) => [JSON.stringify(schema), schema])
-          ).values(),
-        ];
-
-        mergedProperties[prop] = {
-          oneOf: uniquePropSchemas,
-        };
-      }
-
-      // If property doesn't exist in all schemas, it's not required in the merged schema
-      if (propCount < schemasCount) {
-        requiredProperties.delete(prop);
-      }
-    }
-  });
-
-  return {
-    type: "object",
-    properties: mergedProperties,
-    required:
-      requiredProperties.size > 0 ? Array.from(requiredProperties) : undefined,
-  };
+export interface JsonSchema {
+  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /**
@@ -231,13 +36,13 @@ function mergeObjectSchemas(schemas: any[]): any {
 export function jsonToSchema(
   jsonString: string,
   options: JsonSchemaOptions = {}
-): any {
+): JsonSchema {
   try {
     const json = JSON.parse(jsonString);
     const schema = generateJsonSchema(json, options);
 
     // Determine which schema version to use
-    let schemaUrl;
+    let schemaUrl: string;
     switch (options.schemaVersion) {
       case "2019-09":
         schemaUrl = "https://json-schema.org/draft/2019-09/schema";
@@ -247,6 +52,7 @@ export function jsonToSchema(
         break;
       default:
         schemaUrl = "http://json-schema.org/draft-07/schema#";
+        break;
     }
 
     // Add $schema property at the root level
@@ -259,5 +65,279 @@ export function jsonToSchema(
   }
 }
 
-// Export all the functions (including internal ones for testing purposes)
-export { generateJsonSchema, mergeObjectSchemas };
+/**
+ * Generates a JSON Schema from a JSON value.
+ * @param value The JSON value (object, array, primitive, etc.)
+ * @param options Configuration options
+ * @returns A JSON Schema object
+ */
+export function generateJsonSchema(
+  value: unknown,
+  options: JsonSchemaOptions = {}
+): JsonSchema {
+  // Handle null
+  if (value === null) {
+    return { type: "null" };
+  }
+
+  // Handle arrays
+  if (Array.isArray(value)) {
+    return generateArraySchema(value, options);
+  }
+
+  // Handle objects
+  if (typeof value === "object") {
+    return generateObjectSchema(value as Record<string, unknown>, options);
+  }
+
+  // Handle primitive values (string, number, boolean, etc.)
+  return generatePrimitiveSchema(value, options);
+}
+
+/**
+ * Generates a JSON Schema for an array.
+ * Detects item types and merges schemas for object items.
+ * @param array The array to analyze
+ * @param options Configuration options
+ * @returns A JSON Schema for the array
+ */
+function generateArraySchema(
+  array: unknown[],
+  options: JsonSchemaOptions
+): JsonSchema {
+  if (array.length === 0) {
+    // Empty array
+    return {
+      type: "array",
+      items: {},
+    };
+  }
+
+  // Generate schema for each item in the array
+  const itemSchemas = array.map((item) => generateJsonSchema(item, options));
+
+  // Group schemas by their "type" property
+  const schemasByType: Record<string, JsonSchema[]> = {};
+  for (const schema of itemSchemas) {
+    const typeValue = schema.type;
+    if (!schemasByType[typeValue]) {
+      schemasByType[typeValue] = [];
+    }
+    schemasByType[typeValue].push(schema);
+  }
+
+  const distinctTypes = Object.keys(schemasByType);
+
+  // If there is only one type, we simplify (removed the "mixed" check)
+  if (distinctTypes.length === 1) {
+    const singleType = distinctTypes[0];
+    // If it's an array of objects, attempt to merge the object schemas
+    if (singleType === "object") {
+      const mergedSchema = mergeObjectSchemas(schemasByType[singleType]);
+      return {
+        type: "array",
+        items: mergedSchema,
+      };
+    }
+    // Otherwise, it's an array of a single primitive type
+    return {
+      type: "array",
+      items: { type: singleType },
+    };
+  }
+
+  // For mixed-type arrays, use oneOf with unique item schemas
+  const uniqueItemSchemas = deduplicateSchemas(itemSchemas);
+
+  // Create array schema with oneOf for item schemas
+  return {
+    type: "array",
+    items: {
+      oneOf: uniqueItemSchemas,
+    },
+  };
+}
+
+/**
+ * Generates a JSON Schema for an object.
+ * @param obj The object to analyze
+ * @param options Configuration options
+ * @returns A JSON Schema for the object
+ */
+function generateObjectSchema(
+  obj: Record<string, unknown>,
+  options: JsonSchemaOptions
+): JsonSchema {
+  const properties: Record<string, JsonSchema> = {};
+  const required: string[] = [];
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      properties[key] = generateJsonSchema(obj[key], options);
+      required.push(key);
+    }
+  }
+
+  return {
+    type: "object",
+    properties,
+    required: required.length > 0 ? required : undefined,
+  };
+}
+
+/**
+ * Generates a JSON Schema for a primitive value (string, number, boolean, etc.).
+ * @param value The primitive value
+ * @param options Configuration options
+ * @returns A JSON Schema for the primitive value
+ */
+function generatePrimitiveSchema(
+  value: unknown,
+  options: JsonSchemaOptions
+): JsonSchema {
+  const typeOfValue = typeof value;
+
+  if (typeOfValue === "string") {
+    return generateStringSchema(value as string, options);
+  }
+
+  if (typeOfValue === "number") {
+    return Number.isInteger(value) ? { type: "integer" } : { type: "number" };
+  }
+
+  // For boolean or other possible types
+  return { type: typeOfValue };
+}
+
+/**
+ * Generates a JSON Schema specifically for a string.
+ * Optionally detects formats like date-time, email, uri, uuid.
+ * @param str The string value
+ * @param options Configuration options
+ * @returns A JSON Schema for the string (with optional format)
+ */
+function generateStringSchema(
+  str: string,
+  options: JsonSchemaOptions
+): JsonSchema {
+  if (options.detectFormat === false) {
+    return { type: "string" };
+  }
+
+  // Check date-time format (ISO 8601)
+  if (
+    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+\-]\d{2}:\d{2})?)?$/.test(
+      str
+    )
+  ) {
+    return { type: "string", format: "date-time" };
+  }
+
+  // Check email
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str)) {
+    return { type: "string", format: "email" };
+  }
+
+  // Check URI
+  if (/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(str)) {
+    return { type: "string", format: "uri" };
+  }
+
+  // Check UUID
+  if (
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      str
+    )
+  ) {
+    return { type: "string", format: "uuid" };
+  }
+
+  // Default string schema
+  return { type: "string" };
+}
+
+/**
+ * Merge multiple object schemas into one.
+ * Properties that appear in all schemas become required.
+ * Properties that appear in some schemas but have different types
+ * use oneOf to combine them.
+ * @param schemas Array of object schemas to merge
+ * @returns The merged schema
+ */
+export function mergeObjectSchemas(schemas: JsonSchema[]): JsonSchema {
+  const allProperties = new Set<string>();
+
+  // Collect all property names from all schemas
+  for (const schema of schemas) {
+    if (schema.properties) {
+      for (const prop of Object.keys(schema.properties)) {
+        allProperties.add(prop);
+      }
+    }
+  }
+
+  const mergedProperties: Record<string, JsonSchema> = {};
+  const requiredProperties = new Set<string>();
+  const totalSchemas = schemas.length;
+
+  // For each property, unify the schemas that mention it
+  for (const prop of allProperties) {
+    let schemasWithPropCount = 0;
+    const propSchemas: JsonSchema[] = [];
+
+    for (const schema of schemas) {
+      if (schema.properties && schema.properties[prop]) {
+        schemasWithPropCount++;
+        propSchemas.push(schema.properties[prop]);
+
+        // Check if this property is required in the schema
+        if (Array.isArray(schema.required) && schema.required.includes(prop)) {
+          requiredProperties.add(prop);
+        }
+      }
+    }
+
+    // If we have at least one schema containing this property, unify them
+    if (schemasWithPropCount > 0) {
+      // Check if all schemas for this property have the same type
+      const firstType = JSON.stringify(propSchemas[0]);
+      const allSameType = propSchemas.every(
+        (propSchema) => JSON.stringify(propSchema) === firstType
+      );
+
+      if (allSameType) {
+        // If all schemas are identical, just use the first
+        mergedProperties[prop] = propSchemas[0];
+      } else {
+        // If there's variation, create a oneOf with unique schemas
+        mergedProperties[prop] = { oneOf: deduplicateSchemas(propSchemas) };
+      }
+
+      // If the property does not exist in all schemas, it cannot be required
+      if (schemasWithPropCount < totalSchemas) {
+        requiredProperties.delete(prop);
+      }
+    }
+  }
+
+  return {
+    type: "object",
+    properties: mergedProperties,
+    required:
+      requiredProperties.size > 0 ? Array.from(requiredProperties) : undefined,
+  };
+}
+
+/**
+ * Deduplicate an array of schemas by their JSON string representation.
+ * @param schemas An array of JSON Schemas
+ * @returns The array of unique JSON Schemas
+ */
+export function deduplicateSchemas(schemas: JsonSchema[]): JsonSchema[] {
+  const map = new Map<string, JsonSchema>();
+  for (const schema of schemas) {
+    const key = JSON.stringify(schema);
+    map.set(key, schema);
+  }
+  return Array.from(map.values());
+}

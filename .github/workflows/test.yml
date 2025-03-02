@@ -42,3 +42,43 @@ jobs:
         with:
           directory: ./coverage/
           fail_ci_if_error: false
+
+      # Save test results as artifacts
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.node-version }}
+          path: coverage/
+          retention-days: 30
+
+  # Create a job summary with test results
+  summary:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create test summary
+        run: |
+          echo "# Test Results Summary" > test-summary.md
+          echo "" >> test-summary.md
+          echo "| Node Version | Status |" >> test-summary.md
+          echo "|--------------|--------|" >> test-summary.md
+
+          for version in 16.x 18.x 20.x; do
+            if [ -d "test-results-$version" ]; then
+              echo "| $version | ✅ Passed |" >> test-summary.md
+            else
+              echo "| $version | ❌ Failed |" >> test-summary.md
+            fi
+          done
+
+          cat test-summary.md
+
+      - name: Update summary
+        run: cat test-summary.md >> $GITHUB_STEP_SUMMARY

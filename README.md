@@ -1,9 +1,7 @@
 # JSON to Schema Converter
 
 [![Tests](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml/badge.svg)](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml)
-[![Node.js 16](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Node.js%2016&query=%24.runs%5B%3F%28%40.name%20%3D%3D%20%22Use%20Node.js%2016.x%22%29%5D.conclusion&url=https%3A%2F%2Fapi.github.com%2Frepos%2Frezashahnazar%2Fjson-to-schema-converter%2Factions%2Fworkflows%2Ftest.yml%2Fruns%3Fper_page%3D1%26status%3Dcompleted)](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml)
-[![Node.js 18](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Node.js%2018&query=%24.runs%5B%3F%28%40.name%20%3D%3D%20%22Use%20Node.js%2018.x%22%29%5D.conclusion&url=https%3A%2F%2Fapi.github.com%2Frepos%2Frezashahnazar%2Fjson-to-schema-converter%2Factions%2Fworkflows%2Ftest.yml%2Fruns%3Fper_page%3D1%26status%3Dcompleted)](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml)
-[![Node.js 20](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Node.js%2020&query=%24.runs%5B%3F%28%40.name%20%3D%3D%20%22Use%20Node.js%2020.x%22%29%5D.conclusion&url=https%3A%2F%2Fapi.github.com%2Frepos%2Frezashahnazar%2Fjson-to-schema-converter%2Factions%2Fworkflows%2Ftest.yml%2Fruns%3Fper_page%3D1%26status%3Dcompleted)](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
 [![codecov](https://codecov.io/gh/rezashahnazar/json-to-schema-converter/branch/main/graph/badge.svg)](https://codecov.io/gh/rezashahnazar/json-to-schema-converter)
 
 A TypeScript library for automatically generating JSON Schema from JSON objects or strings. Perfect for **LLM context optimization** - generate compact, token-efficient schemas from API responses to reduce prompt size while preserving essential structure.

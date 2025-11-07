@@ -328,8 +328,13 @@ describe("depth option", () => {
         },
       };
       const schema = objectToSchema(obj);
-      expect(schema.properties.level1.properties.level2.properties.level3).toBeDefined();
-      expect(schema.properties.level1.properties.level2.properties.level3.properties.value).toEqual({
+      expect(
+        schema.properties.level1.properties.level2.properties.level3
+      ).toBeDefined();
+      expect(
+        schema.properties.level1.properties.level2.properties.level3.properties
+          .value
+      ).toEqual({
         type: "string",
       });
     });
@@ -374,7 +379,9 @@ describe("depth option", () => {
       const schema = objectToSchema(obj, { depth: 2 });
       expect(schema.properties.level1.properties.level2).toBeDefined();
       expect(schema.properties.level1.properties.level2.type).toBe("object");
-      expect(schema.properties.level1.properties.level2.properties).toBeUndefined();
+      expect(
+        schema.properties.level1.properties.level2.properties
+      ).toBeUndefined();
     });
 
     it("should handle arrays with depth limit", () => {
@@ -432,7 +439,9 @@ describe("depth option", () => {
       expect(schema.properties.items.items.type).toBe("object");
       expect(schema.properties.items.items.properties).toEqual({});
       expect(schema.properties.metadata.properties.author.type).toBe("object");
-      expect(schema.properties.metadata.properties.author.properties).toBeUndefined();
+      expect(
+        schema.properties.metadata.properties.author.properties
+      ).toBeUndefined();
     });
   });
 
@@ -447,7 +456,9 @@ describe("depth option", () => {
       });
       const schema = jsonToSchema(jsonString);
       expect(schema.properties.level1.properties.level2).toBeDefined();
-      expect(schema.properties.level1.properties.level2.properties.value).toEqual({
+      expect(
+        schema.properties.level1.properties.level2.properties.value
+      ).toEqual({
         type: "string",
       });
     });
@@ -489,7 +500,9 @@ describe("depth option", () => {
         depth: 1,
         schemaVersion: "2020-12",
       });
-      expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
+      expect(schema.$schema).toBe(
+        "https://json-schema.org/draft/2020-12/schema"
+      );
       expect(schema.properties.level1.type).toBe("object");
       expect(schema.properties.level1.properties).toBeUndefined();
     });

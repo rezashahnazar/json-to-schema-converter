@@ -1,0 +1,1406 @@
+{
+  "status": "success",
+  "message": "Products retrieved successfully",
+  "data": {
+    "products": [
+      {
+        "id": "prod-001",
+        "sku": "SKU-2024-001",
+        "name": "Premium Wireless Headphones",
+        "description": "High-quality wireless headphones with noise cancellation",
+        "price": {
+          "amount": 299.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 15,
+            "originalPrice": {
+              "value": 349.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 150,
+            "reserved": 25,
+            "total": {
+              "quantity": 175,
+              "warehouses": [
+                {
+                  "id": "WH-001",
+                  "location": {
+                    "address": {
+                      "street": "123 Industrial Blvd",
+                      "city": "San Francisco",
+                      "state": "CA",
+                      "zip": "94102",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "audio": {
+              "frequency": {
+                "range": {
+                  "min": 20,
+                  "max": 20000,
+                  "unit": "Hz"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 1247
+      },
+      {
+        "id": "prod-002",
+        "sku": "SKU-2024-002",
+        "name": "Smart Fitness Watch",
+        "description": "Advanced fitness tracking with heart rate monitoring",
+        "price": {
+          "amount": 199.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 10,
+            "originalPrice": {
+              "value": 219.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 89,
+            "reserved": 12,
+            "total": {
+              "quantity": 101,
+              "warehouses": [
+                {
+                  "id": "WH-002",
+                  "location": {
+                    "address": {
+                      "street": "456 Tech Park Dr",
+                      "city": "Austin",
+                      "state": "TX",
+                      "zip": "78701",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "display": {
+              "resolution": {
+                "width": 390,
+                "height": 390,
+                "unit": "pixels"
+              }
+            }
+          }
+        },
+        "rating": 4.7,
+        "reviews": 892
+      },
+      {
+        "id": "prod-003",
+        "sku": "SKU-2024-003",
+        "name": "4K Ultra HD Smart TV",
+        "description": "65-inch 4K Smart TV with HDR and voice control",
+        "price": {
+          "amount": 899.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 20,
+            "originalPrice": {
+              "value": 1124.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 45,
+            "reserved": 8,
+            "total": {
+              "quantity": 53,
+              "warehouses": [
+                {
+                  "id": "WH-003",
+                  "location": {
+                    "address": {
+                      "street": "789 Electronics Ave",
+                      "city": "Seattle",
+                      "state": "WA",
+                      "zip": "98101",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "display": {
+              "size": {
+                "value": 65,
+                "unit": "inches"
+              }
+            }
+          }
+        },
+        "rating": 4.6,
+        "reviews": 2156
+      },
+      {
+        "id": "prod-004",
+        "sku": "SKU-2024-004",
+        "name": "Gaming Mechanical Keyboard",
+        "description": "RGB backlit mechanical keyboard with Cherry MX switches",
+        "price": {
+          "amount": 149.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 12,
+            "originalPrice": {
+              "value": 169.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 234,
+            "reserved": 18,
+            "total": {
+              "quantity": 252,
+              "warehouses": [
+                {
+                  "id": "WH-004",
+                  "location": {
+                    "address": {
+                      "street": "321 Gaming St",
+                      "city": "Los Angeles",
+                      "state": "CA",
+                      "zip": "90001",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "switches": {
+              "type": {
+                "name": "Cherry MX Red",
+                "actuation": {
+                  "force": 45,
+                  "unit": "g"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.8,
+        "reviews": 3421
+      },
+      {
+        "id": "prod-005",
+        "sku": "SKU-2024-005",
+        "name": "Wireless Charging Pad",
+        "description": "Fast wireless charging pad compatible with Qi standard",
+        "price": {
+          "amount": 39.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 5,
+            "originalPrice": {
+              "value": 41.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 567,
+            "reserved": 34,
+            "total": {
+              "quantity": 601,
+              "warehouses": [
+                {
+                  "id": "WH-005",
+                  "location": {
+                    "address": {
+                      "street": "654 Accessory Ln",
+                      "city": "Chicago",
+                      "state": "IL",
+                      "zip": "60601",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "power": {
+              "output": {
+                "wattage": 15,
+                "unit": "W"
+              }
+            }
+          }
+        },
+        "rating": 4.4,
+        "reviews": 678
+      },
+      {
+        "id": "prod-006",
+        "sku": "SKU-2024-006",
+        "name": "Bluetooth Speaker",
+        "description": "Portable waterproof Bluetooth speaker with 360-degree sound",
+        "price": {
+          "amount": 79.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 8,
+            "originalPrice": {
+              "value": 86.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 312,
+            "reserved": 22,
+            "total": {
+              "quantity": 334,
+              "warehouses": [
+                {
+                  "id": "WH-006",
+                  "location": {
+                    "address": {
+                      "street": "987 Audio Blvd",
+                      "city": "Miami",
+                      "state": "FL",
+                      "zip": "33101",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "audio": {
+              "output": {
+                "power": {
+                  "value": 20,
+                  "unit": "W"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 1456
+      },
+      {
+        "id": "prod-007",
+        "sku": "SKU-2024-007",
+        "name": "USB-C Hub",
+        "description": "Multi-port USB-C hub with HDMI, USB 3.0, and SD card reader",
+        "price": {
+          "amount": 49.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 6,
+            "originalPrice": {
+              "value": 52.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 445,
+            "reserved": 28,
+            "total": {
+              "quantity": 473,
+              "warehouses": [
+                {
+                  "id": "WH-007",
+                  "location": {
+                    "address": {
+                      "street": "147 Tech Accessory Rd",
+                      "city": "Denver",
+                      "state": "CO",
+                      "zip": "80201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "ports": {
+              "usb": {
+                "count": {
+                  "value": 4,
+                  "type": "USB 3.0"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.6,
+        "reviews": 923
+      },
+      {
+        "id": "prod-008",
+        "sku": "SKU-2024-008",
+        "name": "Laptop Stand",
+        "description": "Adjustable aluminum laptop stand for ergonomic workspace",
+        "price": {
+          "amount": 34.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 7,
+            "originalPrice": {
+              "value": 37.49,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 678,
+            "reserved": 41,
+            "total": {
+              "quantity": 719,
+              "warehouses": [
+                {
+                  "id": "WH-008",
+                  "location": {
+                    "address": {
+                      "street": "258 Office Supply St",
+                      "city": "Portland",
+                      "state": "OR",
+                      "zip": "97201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "material": {
+              "type": {
+                "name": "Aluminum",
+                "grade": {
+                  "value": "6061",
+                  "standard": "ANSI"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.7,
+        "reviews": 1876
+      },
+      {
+        "id": "prod-009",
+        "sku": "SKU-2024-009",
+        "name": "Webcam HD 1080p",
+        "description": "Full HD webcam with autofocus and built-in microphone",
+        "price": {
+          "amount": 69.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 9,
+            "originalPrice": {
+              "value": 76.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 234,
+            "reserved": 15,
+            "total": {
+              "quantity": 249,
+              "warehouses": [
+                {
+                  "id": "WH-009",
+                  "location": {
+                    "address": {
+                      "street": "369 Video Equipment Way",
+                      "city": "Boston",
+                      "state": "MA",
+                      "zip": "02101",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "camera": {
+              "resolution": {
+                "width": 1920,
+                "height": 1080,
+                "unit": "pixels"
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 1123
+      },
+      {
+        "id": "prod-010",
+        "sku": "SKU-2024-010",
+        "name": "External SSD 1TB",
+        "description": "Portable external SSD with USB-C and USB 3.0 connectivity",
+        "price": {
+          "amount": 129.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 11,
+            "originalPrice": {
+              "value": 145.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 189,
+            "reserved": 19,
+            "total": {
+              "quantity": 208,
+              "warehouses": [
+                {
+                  "id": "WH-010",
+                  "location": {
+                    "address": {
+                      "street": "741 Storage Dr",
+                      "city": "Phoenix",
+                      "state": "AZ",
+                      "zip": "85001",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "storage": {
+              "capacity": {
+                "value": 1,
+                "unit": "TB"
+              }
+            }
+          }
+        },
+        "rating": 4.8,
+        "reviews": 2567
+      },
+      {
+        "id": "prod-011",
+        "sku": "SKU-2024-011",
+        "name": "Wireless Mouse",
+        "description": "Ergonomic wireless mouse with precision tracking",
+        "price": {
+          "amount": 29.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 4,
+            "originalPrice": {
+              "value": 31.24,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 890,
+            "reserved": 52,
+            "total": {
+              "quantity": 942,
+              "warehouses": [
+                {
+                  "id": "WH-011",
+                  "location": {
+                    "address": {
+                      "street": "852 Input Device Ave",
+                      "city": "Atlanta",
+                      "state": "GA",
+                      "zip": "30301",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "sensor": {
+              "dpi": {
+                "max": 12000,
+                "unit": "DPI"
+              }
+            }
+          }
+        },
+        "rating": 4.6,
+        "reviews": 3456
+      },
+      {
+        "id": "prod-012",
+        "sku": "SKU-2024-012",
+        "name": "Monitor Stand",
+        "description": "Dual monitor stand with adjustable height and tilt",
+        "price": {
+          "amount": 89.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 13,
+            "originalPrice": {
+              "value": 103.44,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 156,
+            "reserved": 11,
+            "total": {
+              "quantity": 167,
+              "warehouses": [
+                {
+                  "id": "WH-012",
+                  "location": {
+                    "address": {
+                      "street": "963 Display Accessory Ln",
+                      "city": "Detroit",
+                      "state": "MI",
+                      "zip": "48201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "mounting": {
+              "vesa": {
+                "compatible": {
+                  "value": true,
+                  "sizes": ["75x75", "100x100"]
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.7,
+        "reviews": 987
+      },
+      {
+        "id": "prod-013",
+        "sku": "SKU-2024-013",
+        "name": "Cable Management Kit",
+        "description": "Complete cable management solution with clips and sleeves",
+        "price": {
+          "amount": 19.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 3,
+            "originalPrice": {
+              "value": 20.61,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 1234,
+            "reserved": 67,
+            "total": {
+              "quantity": 1301,
+              "warehouses": [
+                {
+                  "id": "WH-013",
+                  "location": {
+                    "address": {
+                      "street": "159 Organization Blvd",
+                      "city": "Nashville",
+                      "state": "TN",
+                      "zip": "37201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "components": {
+              "count": {
+                "value": 25,
+                "types": ["clips", "sleeves", "ties"]
+              }
+            }
+          }
+        },
+        "rating": 4.4,
+        "reviews": 2341
+      },
+      {
+        "id": "prod-014",
+        "sku": "SKU-2024-014",
+        "name": "Desk Mat",
+        "description": "Large desk mat with mouse pad surface and wrist support",
+        "price": {
+          "amount": 24.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 5,
+            "originalPrice": {
+              "value": 26.3,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 567,
+            "reserved": 33,
+            "total": {
+              "quantity": 600,
+              "warehouses": [
+                {
+                  "id": "WH-014",
+                  "location": {
+                    "address": {
+                      "street": "357 Workspace St",
+                      "city": "Minneapolis",
+                      "state": "MN",
+                      "zip": "55401",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "dimensions": {
+              "size": {
+                "width": 900,
+                "height": 400,
+                "unit": "mm"
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 1456
+      },
+      {
+        "id": "prod-015",
+        "sku": "SKU-2024-015",
+        "name": "USB-C to HDMI Cable",
+        "description": "High-speed USB-C to HDMI cable supporting 4K resolution",
+        "price": {
+          "amount": 16.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 2,
+            "originalPrice": {
+              "value": 17.34,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 789,
+            "reserved": 45,
+            "total": {
+              "quantity": 834,
+              "warehouses": [
+                {
+                  "id": "WH-015",
+                  "location": {
+                    "address": {
+                      "street": "468 Cable Connection Rd",
+                      "city": "Kansas City",
+                      "state": "MO",
+                      "zip": "64101",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "video": {
+              "resolution": {
+                "max": {
+                  "width": 3840,
+                  "height": 2160,
+                  "unit": "pixels"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.6,
+        "reviews": 678
+      },
+      {
+        "id": "prod-016",
+        "sku": "SKU-2024-016",
+        "name": "LED Strip Lights",
+        "description": "RGB LED strip lights with remote control and app integration",
+        "price": {
+          "amount": 34.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 8,
+            "originalPrice": {
+              "value": 38.03,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 432,
+            "reserved": 26,
+            "total": {
+              "quantity": 458,
+              "warehouses": [
+                {
+                  "id": "WH-016",
+                  "location": {
+                    "address": {
+                      "street": "579 Lighting Way",
+                      "city": "Las Vegas",
+                      "state": "NV",
+                      "zip": "89101",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "lighting": {
+              "colors": {
+                "count": {
+                  "value": 16777216,
+                  "format": "RGB"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 1890
+      },
+      {
+        "id": "prod-017",
+        "sku": "SKU-2024-017",
+        "name": "Phone Stand",
+        "description": "Adjustable phone stand with charging capability",
+        "price": {
+          "amount": 14.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 1,
+            "originalPrice": {
+              "value": 15.14,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 987,
+            "reserved": 58,
+            "total": {
+              "quantity": 1045,
+              "warehouses": [
+                {
+                  "id": "WH-017",
+                  "location": {
+                    "address": {
+                      "street": "681 Mobile Accessory Ave",
+                      "city": "Raleigh",
+                      "state": "NC",
+                      "zip": "27601",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "charging": {
+              "power": {
+                "output": {
+                  "value": 10,
+                  "unit": "W"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.4,
+        "reviews": 1123
+      },
+      {
+        "id": "prod-018",
+        "sku": "SKU-2024-018",
+        "name": "Laptop Cooling Pad",
+        "description": "USB-powered laptop cooling pad with dual fans",
+        "price": {
+          "amount": 27.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 6,
+            "originalPrice": {
+              "value": 29.78,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 345,
+            "reserved": 21,
+            "total": {
+              "quantity": 366,
+              "warehouses": [
+                {
+                  "id": "WH-018",
+                  "location": {
+                    "address": {
+                      "street": "792 Cooling Solutions Dr",
+                      "city": "Indianapolis",
+                      "state": "IN",
+                      "zip": "46201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "cooling": {
+              "fans": {
+                "count": {
+                  "value": 2,
+                  "speed": {
+                    "max": 2000,
+                    "unit": "RPM"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.6,
+        "reviews": 756
+      },
+      {
+        "id": "prod-019",
+        "sku": "SKU-2024-019",
+        "name": "USB Hub 7-Port",
+        "description": "Powered USB 3.0 hub with 7 ports and individual switches",
+        "price": {
+          "amount": 44.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 10,
+            "originalPrice": {
+              "value": 49.99,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 278,
+            "reserved": 17,
+            "total": {
+              "quantity": 295,
+              "warehouses": [
+                {
+                  "id": "WH-019",
+                  "location": {
+                    "address": {
+                      "street": "813 Connectivity Blvd",
+                      "city": "Columbus",
+                      "state": "OH",
+                      "zip": "43201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "ports": {
+              "usb": {
+                "count": {
+                  "value": 7,
+                  "version": "3.0"
+                }
+              }
+            }
+          }
+        },
+        "rating": 4.7,
+        "reviews": 1345
+      },
+      {
+        "id": "prod-020",
+        "sku": "SKU-2024-020",
+        "name": "Desk Organizer",
+        "description": "Multi-compartment desk organizer with drawer and cable management",
+        "price": {
+          "amount": 22.99,
+          "currency": "USD",
+          "discount": {
+            "percentage": 4,
+            "originalPrice": {
+              "value": 23.95,
+              "currency": "USD",
+              "effectiveDate": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-12-31T23:59:59Z",
+                "timezone": {
+                  "name": "UTC",
+                  "offset": "+00:00",
+                  "region": {
+                    "code": "UTC",
+                    "name": "Coordinated Universal Time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "inventory": {
+          "stock": {
+            "available": 654,
+            "reserved": 38,
+            "total": {
+              "quantity": 692,
+              "warehouses": [
+                {
+                  "id": "WH-020",
+                  "location": {
+                    "address": {
+                      "street": "924 Organization Solutions Ln",
+                      "city": "Charlotte",
+                      "state": "NC",
+                      "zip": "28201",
+                      "country": {
+                        "code": "US",
+                        "name": "United States"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "specifications": {
+          "technical": {
+            "compartments": {
+              "count": {
+                "value": 6,
+                "sizes": ["small", "medium", "large"]
+              }
+            }
+          }
+        },
+        "rating": 4.5,
+        "reviews": 987
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "pageSize": 20,
+      "totalPages": 5,
+      "totalItems": 100,
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "nextPageUrl": "/api/products?page=2&limit=20",
+      "previousPageUrl": null
+    },
+    "metadata": {
+      "requestId": "req-2024-11-07-abc123",
+      "timestamp": "2024-11-07T15:30:00Z",
+      "responseTime": {
+        "milliseconds": 45,
+        "formatted": "45ms"
+      },
+      "server": {
+        "name": "api-server-01",
+        "version": "2.1.0",
+        "region": {
+          "code": "us-east-1",
+          "name": "US East (N. Virginia)"
+        }
+      }
+    }
+  }
+}

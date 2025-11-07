@@ -2,7 +2,6 @@
 
 [![Tests](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml/badge.svg)](https://github.com/rezashahnazar/json-to-schema-converter/actions/workflows/test.yml)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
-[![codecov](https://codecov.io/gh/rezashahnazar/json-to-schema-converter/branch/main/graph/badge.svg)](https://codecov.io/gh/rezashahnazar/json-to-schema-converter)
 
 A TypeScript library for automatically generating JSON Schema from JSON objects or strings. Perfect for **LLM context optimization** - generate compact, token-efficient schemas from API responses to reduce prompt size while preserving essential structure.
 

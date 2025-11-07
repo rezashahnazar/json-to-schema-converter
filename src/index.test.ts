@@ -9,6 +9,8 @@ import {
   JsonSchemaOptions,
   deduplicateSchemas,
 } from "./index";
+import * as fs from "fs";
+import * as path from "path";
 
 describe("jsonToSchema", () => {
   it("should generate schema for valid JSON string", () => {
@@ -509,12 +511,9 @@ describe("depth option", () => {
   });
 
   describe("API response schema generation for LLM context", () => {
-    it("should generate optimized schema from fetched API response with depth limiting", async () => {
-      const apiUrl =
-        "https://raw.githubusercontent.com/rezashahnazar/json-to-schema-converter/main/example/products-api-response.json";
-
-      const response = await fetch(apiUrl);
-      const jsonString = await response.text();
+    it("should generate optimized schema from fetched API response with depth limiting", () => {
+      const jsonPath = path.join(__dirname, "..", "example", "products-api-response.json");
+      const jsonString = fs.readFileSync(jsonPath, "utf-8");
 
       const schema = jsonToSchema(jsonString, {
         depth: 4,
@@ -562,12 +561,9 @@ describe("depth option", () => {
       ).toBeUndefined();
     });
 
-    it("should remove required arrays when optimizeForLLM is true", async () => {
-      const apiUrl =
-        "https://raw.githubusercontent.com/rezashahnazar/json-to-schema-converter/main/example/products-api-response.json";
-
-      const response = await fetch(apiUrl);
-      const jsonString = await response.text();
+    it("should remove required arrays when optimizeForLLM is true", () => {
+      const jsonPath = path.join(__dirname, "..", "example", "products-api-response.json");
+      const jsonString = fs.readFileSync(jsonPath, "utf-8");
 
       const schemaWithRequired = jsonToSchema(jsonString, {
         depth: 4,

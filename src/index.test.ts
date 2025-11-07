@@ -507,4 +507,93 @@ describe("depth option", () => {
       expect(schema.properties.level1.properties).toBeUndefined();
     });
   });
+
+  describe("API response schema generation for LLM context", () => {
+    it("should generate optimized schema from fetched API response with depth limiting", async () => {
+      const apiUrl =
+        "https://raw.githubusercontent.com/rezashahnazar/json-to-schema-converter/main/example/products-api-response.json";
+
+      const response = await fetch(apiUrl);
+      const jsonString = await response.text();
+
+      const schema = jsonToSchema(jsonString, {
+        depth: 4,
+        schemaVersion: "2020-12",
+      });
+
+      expect(schema.$schema).toBe(
+        "https://json-schema.org/draft/2020-12/schema"
+      );
+      expect(schema.type).toBe("object");
+      expect(schema.properties.data).toBeDefined();
+      expect(schema.properties.data.properties.products).toBeDefined();
+      expect(schema.properties.data.properties.products.type).toBe("array");
+      expect(
+        schema.properties.data.properties.products.items.properties.name
+      ).toBeDefined();
+      expect(
+        schema.properties.data.properties.products.items.properties.name.type
+      ).toBe("string");
+
+      expect(
+        schema.properties.data.properties.products.items.properties.price.type
+      ).toBe("object");
+      expect(
+        schema.properties.data.properties.products.items.properties.price
+          .properties
+      ).toBeUndefined();
+
+      expect(
+        schema.properties.data.properties.products.items.properties.inventory
+          .type
+      ).toBe("object");
+      expect(
+        schema.properties.data.properties.products.items.properties.inventory
+          .properties
+      ).toBeUndefined();
+
+      expect(
+        schema.properties.data.properties.products.items.properties
+          .specifications.type
+      ).toBe("object");
+      expect(
+        schema.properties.data.properties.products.items.properties
+          .specifications.properties
+      ).toBeUndefined();
+    });
+
+    it("should remove required arrays when optimizeForLLM is true", async () => {
+      const apiUrl =
+        "https://raw.githubusercontent.com/rezashahnazar/json-to-schema-converter/main/example/products-api-response.json";
+
+      const response = await fetch(apiUrl);
+      const jsonString = await response.text();
+
+      const schemaWithRequired = jsonToSchema(jsonString, {
+        depth: 4,
+        schemaVersion: "2020-12",
+        optimizeForLLM: false,
+      });
+
+      const schemaWithoutRequired = jsonToSchema(jsonString, {
+        depth: 4,
+        schemaVersion: "2020-12",
+        optimizeForLLM: true,
+      });
+
+      expect(schemaWithRequired.required).toBeDefined();
+      expect(schemaWithoutRequired.required).toBeUndefined();
+
+      expect(
+        schemaWithRequired.properties.data.properties.products.items.required
+      ).toBeDefined();
+      expect(
+        schemaWithoutRequired.properties.data.properties.products.items.required
+      ).toBeUndefined();
+
+      const withRequiredSize = JSON.stringify(schemaWithRequired).length;
+      const withoutRequiredSize = JSON.stringify(schemaWithoutRequired).length;
+      expect(withoutRequiredSize).toBeLessThan(withRequiredSize);
+    });
+  });
 });

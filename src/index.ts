@@ -25,6 +25,13 @@ export interface JsonSchemaOptions {
    * @default null (unlimited depth)
    */
   depth?: number | null;
+
+  /**
+   * Optimize schema for LLM context by removing `required` arrays.
+   * This reduces token usage while preserving structure information.
+   * @default false
+   */
+  optimizeForLLM?: boolean;
 }
 
 /**
@@ -63,10 +70,16 @@ export function jsonToSchema(
     }
 
     // Add $schema property at the root level
-    return {
+    const finalSchema = {
       $schema: schemaUrl,
       ...schema,
     };
+
+    if (options.optimizeForLLM) {
+      return removeRequired(finalSchema);
+    }
+
+    return finalSchema;
   } catch (error) {
     throw new Error(`Invalid JSON: ${(error as Error).message}`);
   }
@@ -87,28 +100,32 @@ export function objectToSchema(
   const maxDepth = options.depth ?? null;
   const depthReached = maxDepth !== null && currentDepth >= maxDepth;
 
+  let schema: JsonSchema;
+
   // Handle null
   if (value === null) {
-    return { type: "null" };
-  }
-
-  // Handle arrays
-  if (Array.isArray(value)) {
-    return generateArraySchema(value, options, currentDepth, depthReached);
-  }
-
-  // Handle objects
-  if (typeof value === "object") {
-    return generateObjectSchema(
+    schema = { type: "null" };
+  } else if (Array.isArray(value)) {
+    // Handle arrays
+    schema = generateArraySchema(value, options, currentDepth, depthReached);
+  } else if (typeof value === "object") {
+    // Handle objects
+    schema = generateObjectSchema(
       value as Record<string, unknown>,
       options,
       currentDepth,
       depthReached
     );
+  } else {
+    // Handle primitive values (string, number, boolean, etc.)
+    schema = generatePrimitiveSchema(value, options);
   }
 
-  // Handle primitive values (string, number, boolean, etc.)
-  return generatePrimitiveSchema(value, options);
+  if (options.optimizeForLLM && currentDepth === 0) {
+    return removeRequired(schema);
+  }
+
+  return schema;
 }
 
 /**
@@ -373,4 +390,23 @@ export function deduplicateSchemas(schemas: JsonSchema[]): JsonSchema[] {
     map.set(key, schema);
   }
   return Array.from(map.values());
+}
+
+/**
+ * Remove `required` arrays from a schema recursively.
+ * Used for LLM context optimization to reduce token usage.
+ * @param obj The schema object to process
+ * @returns The schema without `required` arrays
+ */
+function removeRequired(obj: any): any {
+  if (!obj || typeof obj !== "object") return obj;
+  if (Array.isArray(obj)) return obj.map(removeRequired);
+
+  const result: any = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (key !== "required") {
+      result[key] = removeRequired(value);
+    }
+  }
+  return result;
 }

@@ -23,7 +23,11 @@
     "schema",
     "converter",
     "json-schema",
-    "validation"
+    "validation",
+    "llm",
+    "llm-optimization",
+    "context-optimization",
+    "token-reduction"
   ],
   "author": "Reza Shahnazar",
   "license": "MIT",

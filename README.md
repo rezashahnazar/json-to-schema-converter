@@ -16,6 +16,7 @@ A TypeScript library for automatically generating JSON Schema from JSON objects 
 - Smart handling of arrays with mixed types
 - Intelligent merging of object schemas
 - Proper handling of required properties
+- Depth limiting for nested structures (similar to `console.dir`)
 - TypeScript type definitions included
 - Zero dependencies
 
@@ -83,7 +84,7 @@ console.log(JSON.stringify(schema, null, 2));
 ### Working with JavaScript Objects
 
 ```typescript
-import { generateJsonSchema } from "json-to-schema-converter";
+import { objectToSchema } from "json-to-schema-converter";
 
 // Work directly with JavaScript objects
 const data = {
@@ -94,9 +95,36 @@ const data = {
 };
 
 // Generate schema from object
-const schema = generateJsonSchema(data);
+const schema = objectToSchema(data);
 
 console.log(JSON.stringify(schema, null, 2));
+```
+
+### Limiting Depth
+
+You can limit how many nested levels are processed in detail, similar to `console.dir`:
+
+```typescript
+import { jsonToSchema, objectToSchema } from "json-to-schema-converter";
+
+const deepObject = {
+  level1: {
+    level2: {
+      level3: {
+        value: "deep nested value",
+      },
+    },
+  },
+};
+
+// Process all levels (default)
+const fullSchema = objectToSchema(deepObject);
+
+// Limit to 2 levels deep
+const limitedSchema = objectToSchema(deepObject, { depth: 2 });
+
+// Limit to 0 (only top-level type)
+const topLevelOnly = objectToSchema(deepObject, { depth: 0 });
 ```
 
 ## API Reference
@@ -112,9 +140,9 @@ Parses a JSON string and generates a JSON Schema.
 
 **Returns:** A JSON Schema object
 
-### `generateJsonSchema(value, options?)`
+### `objectToSchema(value, options?)`
 
-Generates a JSON Schema from a JavaScript value.
+Generates a JSON Schema from a JavaScript value (object, array, primitive, etc.).
 
 **Parameters:**
 
@@ -122,6 +150,8 @@ Generates a JSON Schema from a JavaScript value.
 - `options`: Optional configuration (see Options section)
 
 **Returns:** A JSON Schema object
+
+**Note:** Use `jsonToSchema` for JSON strings, and `objectToSchema` for JavaScript objects/values.
 
 ### `mergeObjectSchemas(schemas)`
 
@@ -135,10 +165,11 @@ Merges multiple object schemas into one.
 
 ## Options
 
-| Option          | Type                           | Default | Description                                                            |
-| --------------- | ------------------------------ | ------- | ---------------------------------------------------------------------- |
-| `detectFormat`  | boolean                        | `true`  | Whether to detect and add format specifiers for common string patterns |
-| `schemaVersion` | "07" \| "2019-09" \| "2020-12" | "07"    | The JSON Schema version to use                                         |
+| Option          | Type                           | Default | Description                                                                                                                                         |
+| --------------- | ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `detectFormat`  | boolean                        | `true`  | Whether to detect and add format specifiers for common string patterns                                                                              |
+| `schemaVersion` | "07" \| "2019-09" \| "2020-12" | "07"    | The JSON Schema version to use                                                                                                                      |
+| `depth`         | number \| null                 | `null`  | Maximum depth to process nested objects and arrays. When depth is reached, nested structures will be simplified. Set to `null` for unlimited depth. |
 
 ## How it works
 
@@ -157,6 +188,7 @@ The library analyzes the structure and types of your JSON data and generates an 
 - **Smart Schema Merging**: Intelligently merges object schemas to create more accurate representations
 - **Required Property Detection**: Properly identifies which properties should be marked as required
 - **Schema Deduplication**: Removes duplicate schemas to create cleaner output
+- **Depth Limiting**: Control how many nested levels are processed, useful for very deep structures or when you only need a high-level schema
 
 ## License
 

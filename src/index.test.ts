@@ -4,7 +4,7 @@
 
 import {
   jsonToSchema,
-  generateJsonSchema,
+  objectToSchema,
   mergeObjectSchemas,
   JsonSchemaOptions,
   deduplicateSchemas,
@@ -40,33 +40,33 @@ describe("jsonToSchema", () => {
   });
 });
 
-describe("generateJsonSchema", () => {
+describe("objectToSchema", () => {
   it("should return null type for null", () => {
-    const schema = generateJsonSchema(null);
+    const schema = objectToSchema(null);
     expect(schema).toEqual({ type: "null" });
   });
 
   it("should handle empty arrays", () => {
-    const schema = generateJsonSchema([]);
+    const schema = objectToSchema([]);
     expect(schema.type).toBe("array");
     expect(schema.items).toEqual({});
   });
 
   it("should handle array of single primitive type (numbers)", () => {
-    const schema = generateJsonSchema([1, 2, 3]);
+    const schema = objectToSchema([1, 2, 3]);
     expect(schema.type).toBe("array");
     expect(schema.items).toEqual({ type: "integer" });
   });
 
   it("should handle array of single primitive type (mixed integer and float)", () => {
-    const schema = generateJsonSchema([1, 2.5]);
+    const schema = objectToSchema([1, 2.5]);
     expect(schema.type).toBe("array");
     expect(schema.items.oneOf).toBeDefined();
     expect(schema.items.oneOf.length).toBe(2);
   });
 
   it("should handle array of objects", () => {
-    const schema = generateJsonSchema([
+    const schema = objectToSchema([
       { name: "Alice", age: 30 },
       { name: "Bob", age: 25 },
     ]);
@@ -77,14 +77,14 @@ describe("generateJsonSchema", () => {
   });
 
   it("should handle array of mixed types", () => {
-    const schema = generateJsonSchema(["Alice", 42, true]);
+    const schema = objectToSchema(["Alice", 42, true]);
     expect(schema.type).toBe("array");
     expect(schema.items.oneOf).toBeDefined();
     expect(schema.items.oneOf.length).toBe(3);
   });
 
   it("should handle object with multiple properties", () => {
-    const schema = generateJsonSchema({ name: "Alice", age: 30 });
+    const schema = objectToSchema({ name: "Alice", age: 30 });
     expect(schema.type).toBe("object");
     expect(schema.properties).toHaveProperty("name");
     expect(schema.properties).toHaveProperty("age");
@@ -92,7 +92,7 @@ describe("generateJsonSchema", () => {
   });
 
   it("should handle nested objects", () => {
-    const schema = generateJsonSchema({
+    const schema = objectToSchema({
       person: { name: "Alice", age: 30 },
     });
     expect(schema.type).toBe("object");
@@ -100,50 +100,50 @@ describe("generateJsonSchema", () => {
   });
 
   it("should detect date-time format for strings", () => {
-    const schema = generateJsonSchema("2021-09-15T12:34:56Z");
+    const schema = objectToSchema("2021-09-15T12:34:56Z");
     expect(schema).toEqual({ type: "string", format: "date-time" });
   });
 
   it("should detect email format for strings", () => {
-    const schema = generateJsonSchema("test@example.com");
+    const schema = objectToSchema("test@example.com");
     expect(schema).toEqual({ type: "string", format: "email" });
   });
 
   it("should detect uri format for strings", () => {
-    const schema = generateJsonSchema("https://example.com");
+    const schema = objectToSchema("https://example.com");
     expect(schema).toEqual({ type: "string", format: "uri" });
   });
 
   it("should detect uuid format for strings", () => {
-    const schema = generateJsonSchema("123e4567-e89b-12d3-a456-426614174000");
+    const schema = objectToSchema("123e4567-e89b-12d3-a456-426614174000");
     expect(schema).toEqual({ type: "string", format: "uuid" });
   });
 
   it("should return string type if no format is detected", () => {
-    const schema = generateJsonSchema("just a string");
+    const schema = objectToSchema("just a string");
     expect(schema).toEqual({ type: "string" });
   });
 
   it("should disable format detection if detectFormat is false", () => {
     const options: JsonSchemaOptions = { detectFormat: false };
-    const schema = generateJsonSchema("2021-09-15T12:34:56Z", options);
+    const schema = objectToSchema("2021-09-15T12:34:56Z", options);
     expect(schema).toEqual({ type: "string" });
   });
 
   it("should distinguish integer vs number", () => {
-    expect(generateJsonSchema(42)).toEqual({ type: "integer" });
-    expect(generateJsonSchema(3.14)).toEqual({ type: "number" });
+    expect(objectToSchema(42)).toEqual({ type: "integer" });
+    expect(objectToSchema(3.14)).toEqual({ type: "number" });
   });
 
   it("should handle boolean type", () => {
-    expect(generateJsonSchema(true)).toEqual({ type: "boolean" });
-    expect(generateJsonSchema(false)).toEqual({ type: "boolean" });
+    expect(objectToSchema(true)).toEqual({ type: "boolean" });
+    expect(objectToSchema(false)).toEqual({ type: "boolean" });
   });
 
   it("should handle other primitives (like symbol, though rarely used in JSON)", () => {
     // Symbol can't be stringified in JSON. Just ensuring coverage fallback:
     const sym = Symbol("test");
-    expect(generateJsonSchema(sym)).toEqual({ type: "symbol" });
+    expect(objectToSchema(sym)).toEqual({ type: "symbol" });
   });
 
   /**
@@ -186,7 +186,7 @@ describe("generateJsonSchema", () => {
     const instance = Object.create(ProtoClass.prototype);
     // instance has no own properties, only a property on the prototype
 
-    const schema = generateJsonSchema(instance);
+    const schema = objectToSchema(instance);
     expect(schema.type).toBe("object");
     // Should have zero own properties
     expect(schema.properties).toEqual({});
@@ -201,7 +201,7 @@ describe("generateJsonSchema", () => {
       { id: 2, value: null },
     ];
 
-    const schema = generateJsonSchema(testData);
+    const schema = objectToSchema(testData);
 
     expect(schema.type).toBe("array");
     expect(schema.items.type).toBe("object");
@@ -224,7 +224,7 @@ describe("generateJsonSchema", () => {
       { id: 3, value: true },
     ];
 
-    const schema = generateJsonSchema(testData);
+    const schema = objectToSchema(testData);
 
     expect(schema.type).toBe("array");
     expect(schema.items.type).toBe("object");
@@ -307,11 +307,191 @@ describe("mergeObjectSchemas", () => {
   });
 
   it("should handle empty arrays of schemas", () => {
-    // Merging no schemas is an edge case
     const merged = mergeObjectSchemas([]);
     expect(merged).toEqual({
       type: "object",
       properties: {},
+    });
+  });
+});
+
+describe("depth option", () => {
+  describe("objectToSchema with depth", () => {
+    it("should process all levels when depth is null (default)", () => {
+      const obj = {
+        level1: {
+          level2: {
+            level3: {
+              value: "deep",
+            },
+          },
+        },
+      };
+      const schema = objectToSchema(obj);
+      expect(schema.properties.level1.properties.level2.properties.level3).toBeDefined();
+      expect(schema.properties.level1.properties.level2.properties.level3.properties.value).toEqual({
+        type: "string",
+      });
+    });
+
+    it("should limit depth to 0 (only top-level type)", () => {
+      const obj = {
+        level1: {
+          level2: {
+            value: "deep",
+          },
+        },
+      };
+      const schema = objectToSchema(obj, { depth: 0 });
+      expect(schema.type).toBe("object");
+      expect(schema.properties).toBeUndefined();
+    });
+
+    it("should limit depth to 1 (one level deep)", () => {
+      const obj = {
+        level1: {
+          level2: {
+            value: "deep",
+          },
+        },
+      };
+      const schema = objectToSchema(obj, { depth: 1 });
+      expect(schema.properties.level1).toBeDefined();
+      expect(schema.properties.level1.type).toBe("object");
+      expect(schema.properties.level1.properties).toBeUndefined();
+    });
+
+    it("should limit depth to 2 (two levels deep)", () => {
+      const obj = {
+        level1: {
+          level2: {
+            level3: {
+              value: "deep",
+            },
+          },
+        },
+      };
+      const schema = objectToSchema(obj, { depth: 2 });
+      expect(schema.properties.level1.properties.level2).toBeDefined();
+      expect(schema.properties.level1.properties.level2.type).toBe("object");
+      expect(schema.properties.level1.properties.level2.properties).toBeUndefined();
+    });
+
+    it("should handle arrays with depth limit", () => {
+      const arr = [
+        {
+          nested: {
+            deep: "value",
+          },
+        },
+      ];
+      const schema = objectToSchema(arr, { depth: 1 });
+      expect(schema.type).toBe("array");
+      expect(schema.items.type).toBe("object");
+      expect(schema.items.properties).toEqual({});
+    });
+
+    it("should handle nested arrays with depth limit", () => {
+      const arr = [
+        [
+          {
+            value: "deep",
+          },
+        ],
+      ];
+      const schema = objectToSchema(arr, { depth: 1 });
+      expect(schema.type).toBe("array");
+      expect(schema.items.type).toBe("array");
+      expect(schema.items.items).toBeUndefined();
+    });
+
+    it("should handle mixed nested structures with depth", () => {
+      const obj = {
+        name: "test",
+        items: [
+          {
+            id: 1,
+            nested: {
+              value: "deep",
+            },
+          },
+        ],
+        metadata: {
+          created: "2021-01-01",
+          author: {
+            name: "John",
+            contact: {
+              email: "john@example.com",
+            },
+          },
+        },
+      };
+      const schema = objectToSchema(obj, { depth: 2 });
+      expect(schema.properties.name.type).toBe("string");
+      expect(schema.properties.items.type).toBe("array");
+      expect(schema.properties.items.items.type).toBe("object");
+      expect(schema.properties.items.items.properties).toEqual({});
+      expect(schema.properties.metadata.properties.author.type).toBe("object");
+      expect(schema.properties.metadata.properties.author.properties).toBeUndefined();
+    });
+  });
+
+  describe("jsonToSchema with depth", () => {
+    it("should process all levels when depth is null (default)", () => {
+      const jsonString = JSON.stringify({
+        level1: {
+          level2: {
+            value: "deep",
+          },
+        },
+      });
+      const schema = jsonToSchema(jsonString);
+      expect(schema.properties.level1.properties.level2).toBeDefined();
+      expect(schema.properties.level1.properties.level2.properties.value).toEqual({
+        type: "string",
+      });
+    });
+
+    it("should limit depth to 0", () => {
+      const jsonString = JSON.stringify({
+        level1: {
+          level2: {
+            value: "deep",
+          },
+        },
+      });
+      const schema = jsonToSchema(jsonString, { depth: 0 });
+      expect(schema.type).toBe("object");
+      expect(schema.properties).toBeUndefined();
+    });
+
+    it("should limit depth to 1", () => {
+      const jsonString = JSON.stringify({
+        level1: {
+          level2: {
+            value: "deep",
+          },
+        },
+      });
+      const schema = jsonToSchema(jsonString, { depth: 1 });
+      expect(schema.properties.level1).toBeDefined();
+      expect(schema.properties.level1.type).toBe("object");
+      expect(schema.properties.level1.properties).toBeUndefined();
+    });
+
+    it("should combine depth with schemaVersion option", () => {
+      const jsonString = JSON.stringify({
+        level1: {
+          level2: "value",
+        },
+      });
+      const schema = jsonToSchema(jsonString, {
+        depth: 1,
+        schemaVersion: "2020-12",
+      });
+      expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
+      expect(schema.properties.level1.type).toBe("object");
+      expect(schema.properties.level1.properties).toBeUndefined();
     });
   });
 });

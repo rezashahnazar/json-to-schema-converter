@@ -18,6 +18,13 @@ export interface JsonSchemaOptions {
    * @default "07"
    */
   schemaVersion?: "07" | "2019-09" | "2020-12";
+
+  /**
+   * Maximum depth to process nested objects and arrays.
+   * When depth is reached, nested structures will be simplified.
+   * @default null (unlimited depth)
+   */
+  depth?: number | null;
 }
 
 /**
@@ -39,7 +46,7 @@ export function jsonToSchema(
 ): JsonSchema {
   try {
     const json = JSON.parse(jsonString);
-    const schema = generateJsonSchema(json, options);
+    const schema = objectToSchema(json, options);
 
     // Determine which schema version to use
     let schemaUrl: string;
@@ -66,15 +73,20 @@ export function jsonToSchema(
 }
 
 /**
- * Generates a JSON Schema from a JSON value.
- * @param value The JSON value (object, array, primitive, etc.)
+ * Generates a JSON Schema from a JavaScript object/value.
+ * @param value The JavaScript value (object, array, primitive, etc.)
  * @param options Configuration options
+ * @param currentDepth Internal parameter to track current depth (used for recursion)
  * @returns A JSON Schema object
  */
-export function generateJsonSchema(
+export function objectToSchema(
   value: unknown,
-  options: JsonSchemaOptions = {}
+  options: JsonSchemaOptions = {},
+  currentDepth: number = 0
 ): JsonSchema {
+  const maxDepth = options.depth ?? null;
+  const depthReached = maxDepth !== null && currentDepth >= maxDepth;
+
   // Handle null
   if (value === null) {
     return { type: "null" };
@@ -82,12 +94,17 @@ export function generateJsonSchema(
 
   // Handle arrays
   if (Array.isArray(value)) {
-    return generateArraySchema(value, options);
+    return generateArraySchema(value, options, currentDepth, depthReached);
   }
 
   // Handle objects
   if (typeof value === "object") {
-    return generateObjectSchema(value as Record<string, unknown>, options);
+    return generateObjectSchema(
+      value as Record<string, unknown>,
+      options,
+      currentDepth,
+      depthReached
+    );
   }
 
   // Handle primitive values (string, number, boolean, etc.)
@@ -99,24 +116,34 @@ export function generateJsonSchema(
  * Detects item types and merges schemas for object items.
  * @param array The array to analyze
  * @param options Configuration options
+ * @param currentDepth Current depth in the object tree
+ * @param depthReached Whether the maximum depth has been reached
  * @returns A JSON Schema for the array
  */
 function generateArraySchema(
   array: unknown[],
-  options: JsonSchemaOptions
+  options: JsonSchemaOptions,
+  currentDepth: number,
+  depthReached: boolean
 ): JsonSchema {
+  if (depthReached) {
+    return {
+      type: "array",
+    };
+  }
+
   if (array.length === 0) {
-    // Empty array
     return {
       type: "array",
       items: {},
     };
   }
 
-  // Generate schema for each item in the array
-  const itemSchemas = array.map((item) => generateJsonSchema(item, options));
+  const nextDepth = currentDepth + 1;
+  const itemSchemas = array.map((item) =>
+    objectToSchema(item, options, nextDepth)
+  );
 
-  // Group schemas by their "type" property
   const schemasByType: Record<string, JsonSchema[]> = {};
   for (const schema of itemSchemas) {
     const typeValue = schema.type;
@@ -128,10 +155,8 @@ function generateArraySchema(
 
   const distinctTypes = Object.keys(schemasByType);
 
-  // If there is only one type, we simplify (removed the "mixed" check)
   if (distinctTypes.length === 1) {
     const singleType = distinctTypes[0];
-    // If it's an array of objects, attempt to merge the object schemas
     if (singleType === "object") {
       const mergedSchema = mergeObjectSchemas(schemasByType[singleType]);
       return {
@@ -139,17 +164,14 @@ function generateArraySchema(
         items: mergedSchema,
       };
     }
-    // Otherwise, it's an array of a single primitive type
     return {
       type: "array",
       items: { type: singleType },
     };
   }
 
-  // For mixed-type arrays, use oneOf with unique item schemas
   const uniqueItemSchemas = deduplicateSchemas(itemSchemas);
 
-  // Create array schema with oneOf for item schemas
   return {
     type: "array",
     items: {
@@ -162,18 +184,29 @@ function generateArraySchema(
  * Generates a JSON Schema for an object.
  * @param obj The object to analyze
  * @param options Configuration options
+ * @param currentDepth Current depth in the object tree
+ * @param depthReached Whether the maximum depth has been reached
  * @returns A JSON Schema for the object
  */
 function generateObjectSchema(
   obj: Record<string, unknown>,
-  options: JsonSchemaOptions
+  options: JsonSchemaOptions,
+  currentDepth: number,
+  depthReached: boolean
 ): JsonSchema {
+  if (depthReached) {
+    return {
+      type: "object",
+    };
+  }
+
   const properties: Record<string, JsonSchema> = {};
   const required: string[] = [];
+  const nextDepth = currentDepth + 1;
 
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      properties[key] = generateJsonSchema(obj[key], options);
+      properties[key] = objectToSchema(obj[key], options, nextDepth);
       required.push(key);
     }
   }
@@ -226,7 +259,7 @@ function generateStringSchema(
 
   // Check date-time format (ISO 8601)
   if (
-    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+\-]\d{2}:\d{2})?)?$/.test(
+    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/.test(
       str
     )
   ) {
